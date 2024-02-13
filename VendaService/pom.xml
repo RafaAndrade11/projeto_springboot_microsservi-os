@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.randrade.vendas.online</groupId>
-	<artifactId>VendasService</artifactId>
+	<artifactId>VendaService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>VendasService</name>
+	<name>VendaService</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
