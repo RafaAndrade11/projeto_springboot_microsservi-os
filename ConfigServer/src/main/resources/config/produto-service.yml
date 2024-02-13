@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
   wait-time-in-ms-when-sync-empty: 3000
 
 spring:
@@ -8,8 +8,6 @@ spring:
       active: native
   data:
       mongodb:
-        uri: mongodb://mongodb:27017
-        database: cliente
+        uri: mongodb://localhost:27017
+        database: produto
         auto-index-creation: true
-
-application-version: 1.0

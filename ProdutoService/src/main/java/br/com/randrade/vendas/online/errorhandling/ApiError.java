@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -20,11 +18,8 @@ import lombok.Setter;
 @Setter
 public class ApiError {
 
-    private HttpStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
-    private String message;
-    private String debugMessage;
     private List<ApiSubError> subErrors;
 
     private ApiError() {
@@ -33,21 +28,16 @@ public class ApiError {
 
     public ApiError(HttpStatus status) {
         this();
-        this.status = status;
     }
 
     public ApiError(HttpStatus status, Throwable ex) {
         this();
-        this.status = status;
-        this.message = "Unexpected error";
-        this.debugMessage = ex.getLocalizedMessage();
+        ex.getLocalizedMessage();
     }
 
     public ApiError(HttpStatus status, String message, Throwable ex) {
         this();
-        this.status = status;
-        this.message = message;
-        this.debugMessage = ex.getLocalizedMessage();
+        ex.getLocalizedMessage();
     }
 
     private void addSubError(ApiSubError subError) {
@@ -58,7 +48,7 @@ public class ApiError {
     }
 
     private void addValidationError(String object, String field, Object rejectedValue, String message) {
-        addSubError(new ApiValidationError(object, field, rejectedValue, message));
+        addSubError(new ApiValidationError(object, field));
     }
 
     private void addValidationError(String object, String message) {
@@ -92,7 +82,7 @@ public class ApiError {
      *
      * @param cv the ConstraintViolation
      */
-    private void addValidationError(ConstraintViolation<?> cv) {
+    private void addValidationError(jakarta.validation.ConstraintViolation<?> cv) {
         this.addValidationError(
                 cv.getRootBeanClass().getSimpleName(),
                 "",
@@ -100,7 +90,7 @@ public class ApiError {
                 cv.getMessage());
     }
 
-    public void addValidationErrors(Set<ConstraintViolation<?>> constraintViolations) {
+    public void addValidationErrors(Set<jakarta.validation.ConstraintViolation<?>> constraintViolations) {
         constraintViolations.forEach(this::addValidationError);
     }
 }
